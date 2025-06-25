@@ -1,0 +1,25 @@
+<div class="landing-page">
+  <form (ngSubmit)="register()" #form="ngForm">
+    <label for="name">Enter your name:</label>
+    <input 
+      type="text" 
+      id="name" 
+      name="playerName" 
+      [(ngModel)]="player.player_name" 
+      required 
+      minlength="3" 
+      maxlength="8"
+      #nameInput="ngModel">
+
+    <!-- Error container that always takes up space -->
+    <div class="error-container">
+      <div *ngIf="nameInput.invalid && nameInput.touched" class="error-message">
+        <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
+        <span *ngIf="nameInput.errors?.['minlength']">Name must be at least 3 characters.</span>
+        <span *ngIf="nameInput.errors?.['maxlength']">Name cannot exceed 8 characters.</span>
+      </div>
+    </div>
+    
+    <button type="submit" class="button" [disabled]="form.invalid">Enter Lobby</button>
+  </form>
+</div>

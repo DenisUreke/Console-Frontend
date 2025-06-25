@@ -1,0 +1,10 @@
+
+<div class="app-container">
+  <!-- Show landing page when showController is false -->
+  <app-landing-page *ngIf="!showController"></app-landing-page>
+  
+  <!-- Show controller when showController is true -->
+  <app-controller *ngIf="showController"></app-controller>
+</div>
+
+<router-outlet />
