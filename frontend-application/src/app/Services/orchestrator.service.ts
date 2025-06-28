@@ -121,6 +121,7 @@ export class OrchestratorService {
       data: {
       input_type: 'joystick_move',
       player_name: currentPlayer?.player_name,
+      player_number: currentPlayer?.player_number,
       direction: direction,
       distance: distance
     }};
@@ -137,6 +138,7 @@ export class OrchestratorService {
       data: {
       input_type: 'joystick_release',
       player_name: currentPlayer?.player_name,
+      player_number: currentPlayer?.player_number,
       released: "True"
     }};
 
@@ -153,6 +155,7 @@ export class OrchestratorService {
       data: {
         input_type: 'button_press',
         player_name: currentPlayer?.player_name,
+        player_number: currentPlayer?.player_number,
         button: button
       }
     };
