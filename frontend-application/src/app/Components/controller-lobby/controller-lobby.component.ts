@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-controller',
+  selector: 'app-controller-lobby',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './controller-lobby.component.html',

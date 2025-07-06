@@ -23,7 +23,7 @@ export class OrchestratorService {
   private currentPlayerSubject = new BehaviorSubject<Player | null>(null);
   public currentPlayer$: Observable<Player | null> = this.currentPlayerSubject.asObservable();
 
-  private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.JOYSTICK);
+  private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.LOBBY);
   public controllerType$: Observable<ControllerType> = this.controllerTypeSubject.asObservable();
 
   constructor(private webSocketService: WebsocketService) {
@@ -50,6 +50,9 @@ export class OrchestratorService {
         break;
       case 'player_joined':
         this.handlePlayerJoined(message.data);
+        break;
+      case 'controller_change':
+        this.changeController(message.data);
         break;
       case 'error':
         this.handleError(message.data);
@@ -168,9 +171,9 @@ export class OrchestratorService {
     let currentPlayer = this.getCurrentPlayer();
 
     const message = {
-      type: 'player_controles',
+      type: 'player_controls',
       data: {
-        input_type: 'joystick_move',
+        input_type: 'keypad_move',
         player_name: currentPlayer?.player_name,
         player_number: currentPlayer?.player_number,
         direction: direction,
@@ -233,5 +236,31 @@ export class OrchestratorService {
     const players = this.playersSubject.value;
     const leader = players.find(player => player.is_leader);
     return leader ? `👑 ${leader.player_name}` : 'No Leader';
+  }
+
+  changeController(data: any) {
+
+    /*
+    const message = {
+      type: 'controller_change',
+      data: {
+        player_number: "player_number_here", <--- or "all" meaning all players change to this
+        controller_type: "LOBBY",
+      }
+    };
+    */
+    
+    // Extract from data
+    const player_number = data.player_number
+    const controller_type = data.controller_type
+    // Get current player data
+    const current_player = this.getCurrentPlayer();
+    const current_player_number = current_player?.player_number;
+
+    if(current_player_number === player_number || player_number === "all"){
+      this.controllerTypeSubject.next(controller_type as ControllerType)
+      console.log("Controller type changed to:", controller_type);
+    }
+
   }
 }
