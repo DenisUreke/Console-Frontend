@@ -3,13 +3,14 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LandingPageComponent } from './Components/landing-page/landing-page.component';
 import { ControllerLobbyComponent } from './Components/controller-lobby/controller-lobby.component';
+import { ControllerParentComponent } from './Components/controller-parent/controller-parent.component';
 import { IsLoggedService } from './Services/is-logged.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, LandingPageComponent, ControllerLobbyComponent],
+  imports: [RouterOutlet, CommonModule, LandingPageComponent, ControllerParentComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

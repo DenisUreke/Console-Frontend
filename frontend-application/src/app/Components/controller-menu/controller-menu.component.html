@@ -1,0 +1,44 @@
+<div class="main-parent">
+  <div class="inner-parent">
+
+    <!-- Top menu with players dropdown -->
+    <div class="top-menu-parent">
+      <div *ngIf="currentPlayer" class="current-player">
+        {{ currentPlayer.player_name }}
+      </div>
+      <div class="player-info">
+        <div class="player-count">
+          <i class="fas fa-user"></i> logged: {{ playerCount }}
+          <!--<i class="fas fa-crown"></i>-->
+        </div>
+        <div class="player-dropdown" *ngIf="currentPlayer?.is_leader">
+          <select (change)="onPlayerSelected($event)" class="player-select" title="Select a player from the list">
+            <option value="" disabled selected>{{ getLeaderName() }}</option>
+            <ng-container *ngFor="let player of players">
+              <option *ngIf="player.player_name !== currentPlayer?.player_name" [value]="player.player_number">
+                {{ player.player_number }}: {{ player.player_name }} {{ player.is_leader ? '👑' : '' }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="controller-container-lobby">
+      <div class="joystick-parent">
+        <div class="upper-row"><button class="up-button" (click)="onControllerClick('up')" >▲</button></div>
+        <div class="middle-row">
+          <button class="left-button" (click)="onControllerClick('left')">◀</button>
+          <button class="right-button" (click) ="onControllerClick('right')">▶</button>
+        </div>
+        <div class="lower-row"><button class="down-button" (click) ="onControllerClick('down')">▼</button></div>
+      </div>
+
+      <div class="buttons-parent">
+        <button class="controller-button" (click)="onButtonClick('O')">O</button>
+        <button class="controller-button" (click)="onButtonClick('X')">X</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -23,7 +23,7 @@ export class OrchestratorService {
   private currentPlayerSubject = new BehaviorSubject<Player | null>(null);
   public currentPlayer$: Observable<Player | null> = this.currentPlayerSubject.asObservable();
 
-  private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.LOBBY);
+  private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.JOYSTICK);
   public controllerType$: Observable<ControllerType> = this.controllerTypeSubject.asObservable();
 
   constructor(private webSocketService: WebsocketService) {
@@ -161,6 +161,23 @@ export class OrchestratorService {
     };
 
     this.webSocketService.sendMessage(JSON.stringify(message));
+  }
+
+  sendKeyPadPress(direction: string){
+
+    let currentPlayer = this.getCurrentPlayer();
+
+    const message = {
+      type: 'player_controles',
+      data: {
+        input_type: 'joystick_move',
+        player_name: currentPlayer?.player_name,
+        player_number: currentPlayer?.player_number,
+        direction: direction,
+      }
+    }
+
+    this.webSocketService.sendMessage(JSON.stringify(direction))
   }
 
   // Getters for current values (synchronous access)
