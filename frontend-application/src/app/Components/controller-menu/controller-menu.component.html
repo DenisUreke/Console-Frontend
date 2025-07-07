@@ -26,12 +26,17 @@
 
     <div class="controller-container-lobby">
       <div class="joystick-parent">
-        <div class="upper-row"><button class="up-button" (click)="onControllerClick('up')" >▲</button></div>
+        <div class="upper-row">
+          <button class="up-button" (click)="onControllerClick('up')">▲</button>
+        </div>
         <div class="middle-row">
           <button class="left-button" (click)="onControllerClick('left')">◀</button>
-          <button class="right-button" (click) ="onControllerClick('right')">▶</button>
+          <button class="right-button" (click)="onControllerClick('right')">▶</button>
         </div>
-        <div class="lower-row"><button class="down-button" (click) ="onControllerClick('down')">▼</button></div>
+        <div class="lower-row">
+          <button class="down-button" (click)="onControllerClick('down')">▼</button>
+        </div>
+
       </div>
 
       <div class="buttons-parent">

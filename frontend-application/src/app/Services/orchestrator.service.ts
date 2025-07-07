@@ -23,7 +23,7 @@ export class OrchestratorService {
   private currentPlayerSubject = new BehaviorSubject<Player | null>(null);
   public currentPlayer$: Observable<Player | null> = this.currentPlayerSubject.asObservable();
 
-  private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.JOYSTICK);
+  private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.KEYPAD);
   public controllerType$: Observable<ControllerType> = this.controllerTypeSubject.asObservable();
 
   constructor(private webSocketService: WebsocketService) {
@@ -180,7 +180,7 @@ export class OrchestratorService {
       }
     }
 
-    this.webSocketService.sendMessage(JSON.stringify(direction))
+    this.webSocketService.sendMessage(JSON.stringify(message))
   }
 
   // Getters for current values (synchronous access)
@@ -257,10 +257,11 @@ export class OrchestratorService {
     const current_player = this.getCurrentPlayer();
     const current_player_number = current_player?.player_number;
 
-    if(current_player_number === player_number || player_number === "all"){
-      this.controllerTypeSubject.next(controller_type as ControllerType)
-      console.log("Controller type changed to:", controller_type);
-    }
+if (current_player_number === player_number || player_number === "all") {
+  const mappedEnum = ControllerType[controller_type as keyof typeof ControllerType];
+  this.controllerTypeSubject.next(mappedEnum);
+  console.log("Controller type changed to:", mappedEnum);
+}
 
   }
 }

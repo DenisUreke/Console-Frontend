@@ -1,4 +1,4 @@
-export enum ControllerType{
-    KEYPAD = "KeyPad",
-    JOYSTICK = "Joystick"
+export enum ControllerType {
+  KEYPAD = 'KEYPAD',
+  JOYSTICK = 'JOYSTICK'
 }

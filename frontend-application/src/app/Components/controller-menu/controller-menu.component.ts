@@ -14,8 +14,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './controller-menu.component.html',
   styleUrl: './controller-menu.component.css'
 })
-export class ControllerMenuComponent implements OnDestroy, OnInit{
-@ViewChild('joystickContainer', { static: false }) joystickContainer!: ElementRef;
+export class ControllerMenuComponent implements OnDestroy, OnInit {
+  @ViewChild('joystickContainer', { static: false }) joystickContainer!: ElementRef;
 
   // Game state from orchestrator
   players: Player[] = [];
@@ -85,7 +85,7 @@ export class ControllerMenuComponent implements OnDestroy, OnInit{
   }
 
   onPlayerSelected(event: any): void {
-  
+
     const selectedID = Number(event.target.value)
     const selectedPlayer = this.players.find(p => p.player_number === selectedID)
 
@@ -95,10 +95,14 @@ export class ControllerMenuComponent implements OnDestroy, OnInit{
 
   }
 
-  onControllerClick(key: string) {
+  onControllerClick(direction: string) {
+    const button = document.querySelector(`.${direction}-button`);
+    if (button) {
+      button.classList.add('pressed');
+      setTimeout(() => button.classList.remove('pressed'), 150);
+    }
 
-
-    this.orchestrator.sendKeyPadPress(key)
+    this.orchestrator.sendKeyPadPress(direction)
   }
 
   ngOnDestroy(): void {
