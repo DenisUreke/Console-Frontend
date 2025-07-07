@@ -23,7 +23,7 @@ export class OrchestratorService {
   private currentPlayerSubject = new BehaviorSubject<Player | null>(null);
   public currentPlayer$: Observable<Player | null> = this.currentPlayerSubject.asObservable();
 
-  private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.LOBBY);
+  private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.JOYSTICK);
   public controllerType$: Observable<ControllerType> = this.controllerTypeSubject.asObservable();
 
   constructor(private webSocketService: WebsocketService) {

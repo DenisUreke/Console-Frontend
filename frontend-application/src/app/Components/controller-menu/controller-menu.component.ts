@@ -22,7 +22,7 @@ export class ControllerMenuComponent implements OnDestroy, OnInit{
   playerCount = 0;
   gameState: State = State.LOBBY;
   currentPlayer: Player | null = null;
-  controllerType: ControllerType = ControllerType.LOBBY;
+  controllerType: ControllerType = ControllerType.KEYPAD;
   throttle = 50;
 
   // Subscriptions to orchestrator observables
@@ -96,6 +96,8 @@ export class ControllerMenuComponent implements OnDestroy, OnInit{
   }
 
   onControllerClick(key: string) {
+
+
     this.orchestrator.sendKeyPadPress(key)
   }
 

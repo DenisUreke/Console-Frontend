@@ -15,7 +15,7 @@ import { ControllerType } from '../../Enums/Controller_type';
 })
 export class ControllerParentComponent implements OnDestroy, OnInit {
 
-  controllerType: ControllerType = ControllerType.LOBBY;
+  controllerType: ControllerType = ControllerType.JOYSTICK;
   ControllerType = ControllerType;
 
   private controllerTypeSubscription: Subscription | undefined;
