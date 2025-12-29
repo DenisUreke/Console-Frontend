@@ -16,7 +16,7 @@ export class WebsocketService {
 connect() {
   if (!this.socket$ || this.socket$.closed) {
     this.socket$ = webSocket({
-      url: 'ws://192.168.0.31:8765',
+      url: 'ws://192.168.1.213:8765',
       openObserver: {
         next: () => console.log('WebSocket connected')
       },
