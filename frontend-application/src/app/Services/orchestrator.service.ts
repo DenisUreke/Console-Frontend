@@ -61,42 +61,44 @@ export class OrchestratorService {
         console.warn('Unknown message type:', message.type);
     }
   }
-  private handlePlayerListUpdate(data: any): void {
-    const players: Player[] = [];
+  
+private handlePlayerListUpdate(data: any): void {
+  const players: Player[] = [];
 
-    if (data.players && Array.isArray(data.players)) {
-      for (const playerData of data.players) {
-        // Create Player instances with all the new data
-        const player = new Player(
-          playerData.name,
-          playerData.player_number,
-          playerData.is_leader || false,
-          playerData.player_score || 0,
-          playerData.player_lives || 0
-        );
-        players.push(player);
-      }
+  if (data.players && Array.isArray(data.players)) {
+    for (const playerData of data.players) {
+      const player = new Player(
+        playerData.name,
+        playerData.player_number,
+        playerData.is_leader || false,
+        playerData.player_score || 0,
+        playerData.player_lives || 0,
+        playerData.team_selection_position ?? 1,
+        playerData.is_in_game ?? false,
+        playerData.color_theme || ''
+      );
+      players.push(player);
     }
-
-    const playerCount = data.player_count || 0;
-
-    // Update the observables
-    this.playersSubject.next(players);
-    this.playerCountSubject.next(playerCount);
-
-    // Get current user data on list update
-    const currentPlayerName = this.currentPlayerSubject.value?.player_name;
-    if (currentPlayerName) {
-      const myUpdatedData = players.find(p => p.player_name === currentPlayerName);
-      if (myUpdatedData) {
-        this.currentPlayerSubject.next(myUpdatedData);
-      } else {
-        console.warn('Current player not found in updated player list:', currentPlayerName);
-      }
-    }
-
-    console.log('Player list updated:', players);
   }
+
+  const playerCount = data.player_count || 0;
+
+  this.playersSubject.next(players);
+  this.playerCountSubject.next(playerCount);
+
+  const currentPlayerName = this.currentPlayerSubject.value?.player_name;
+  if (currentPlayerName) {
+    const myUpdatedData = players.find(p => p.player_name === currentPlayerName);
+    if (myUpdatedData) {
+      this.currentPlayerSubject.next(myUpdatedData);
+    } else {
+      console.warn('Current player not found in updated player list:', currentPlayerName);
+    }
+  }
+
+  console.log('Player list updated:', players);
+}
+
 
   private handleStateChange(data: any): void {
     const newState = data.state;
@@ -239,17 +241,6 @@ export class OrchestratorService {
   }
 
   changeController(data: any) {
-
-    /*
-    const message = {
-      type: 'controller_change',
-      data: {
-        player_number: "player_number_here", <--- or "all" meaning all players change to this
-        controller_type: "LOBBY",
-      }
-    };
-    */
-    
     // Extract from data
     const player_number = data.player_number
     const controller_type = data.controller_type

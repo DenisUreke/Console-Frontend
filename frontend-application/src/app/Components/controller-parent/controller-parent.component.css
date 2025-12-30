@@ -1,0 +1,4 @@
+.controller-root {
+  /* optional: nothing required, but keeping it explicit is nice */
+  --player-color: #00FFFF;
+}

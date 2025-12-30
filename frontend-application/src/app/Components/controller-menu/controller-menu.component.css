@@ -33,7 +33,7 @@
   justify-content: space-between;
   align-items: center;
   background: rgba(0, 0, 0, 0.8);
-  border-bottom: 2px solid rgb(50, 255, 255);
+  border-bottom: 2px solid var(--player-color, #00FFFF);
   box-sizing: border-box;
   padding-left: 2%;
   padding-right: 2%;
@@ -44,7 +44,7 @@
   width: 50%;
   display: flex;
   align-items: center;
-  color: cyan;
+  color: var(--player-color, #00FFFF);
   font-size: 14px;
 }
 
@@ -55,7 +55,7 @@
   gap: 10%;
   font-weight: bold;
   white-space: nowrap;
-  color: cyan;
+  color: var(--player-color, #00FFFF);
   box-sizing: border-box;
   font-family: 'Orbitron', monospace;
   padding-right: 5%;
@@ -65,8 +65,8 @@
 .player-select {
   padding: 8px 12px;
   background-color: #111;
-  color: cyan;
-  border: 2px solid rgb(50, 255, 255);
+  color: var(--player-color, #00FFFF);
+  border: 2px solid var(--player-color, #00FFFF);
   border-radius: 5px;
   font-size: 18px;
   min-width: 180px;
@@ -79,7 +79,7 @@
 
 .player-select:focus {
   outline: none;
-  box-shadow: 0 0 10px rgba(50, 255, 255, 0.5);
+  box-shadow: 0 0 10px var(--player-color, #00FFFF);
 }
 
 /* Hide the first option from dropdown list */
@@ -90,7 +90,7 @@
 .current-player {
   width: 50%;
   font-size: 24px;
-  color: rgb(50, 255, 255);
+  color: var(--player-color, #00FFFF);
   white-space: nowrap;
   font-family: 'Orbitron', monospace;
 }
@@ -178,7 +178,7 @@ display: flex;
 justify-content: center;
 align-content: center;
 align-items: center;
-background-color: cyan;
+background-color: var(--player-color, #00FFFF);
 font-size: 3rem;
 border-radius: 5px;
 }
@@ -190,15 +190,15 @@ border-radius: 5px;
 @keyframes pressEffect {
   0% {
     transform: scale(1);
-    background-color: cyan;
+    background-color: var(--player-color, #00FFFF);
   }
   50% {
     transform: scale(0.9);
-    background-color: deepskyblue;
+    background-color: var(--player-color, #00FFFF);
   }
   100% {
     transform: scale(1);
-    background-color: cyan;
+    background-color: var(--player-color, #00FFFF);
   }
 }
 
@@ -217,9 +217,9 @@ border-radius: 5px;
   height: 80px;
   border-radius: 50%;
   background-color: #111;
-  color: cyan;
+  color: var(--player-color, #00FFFF);
   font-size: 20px;
-  border: 2px solid rgb(50, 255, 255);
+  border: 2px solid var(--player-color, #00FFFF);
   box-shadow: 0 0 15px rgba(50, 255, 255, 0.5);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 
@@ -232,7 +232,7 @@ border-radius: 5px;
 
 .controller-button:active {
   transform: scale(0.9);
-  box-shadow: 0 0 25px rgba(50, 255, 255, 1);
+  box-shadow: 0 0 25px var(--player-color, #00FFFF);
 }
 
 /*--------------------------------------*/
