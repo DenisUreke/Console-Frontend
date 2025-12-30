@@ -6,6 +6,7 @@
       <div *ngIf="currentPlayer" class="current-player">
         {{ currentPlayer.player_name }}
       </div>
+      <div class="start-button" (click)="onButtonClick('pause_toggle')">START</div>
       <div class="player-info">
         <div class="player-count">
           <i class="fas fa-user"></i> logged: {{ playerCount }}
