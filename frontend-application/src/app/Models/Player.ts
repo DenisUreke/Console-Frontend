@@ -8,6 +8,8 @@ export class Player {
   public team_selection_position: number;
   public is_in_game: boolean;
   public color_theme: string;
+  public session_token: string = "";
+  public connected: boolean = true;
 
   constructor(
     name: string, 
@@ -17,7 +19,10 @@ export class Player {
     player_lives: number = 0,
     team_selection_position: number = 1,
     is_in_game = false,
-    color_theme: string = ''
+    color_theme: string = '',
+    session_token = '',
+    connected = true
+
   ) {
     this.player_name = name;
     this.player_number = player_number;
@@ -28,5 +33,7 @@ export class Player {
     this.is_in_game = is_in_game;
     this.color_theme = color_theme;
     this.color_theme = color_theme;
+    this.session_token = session_token;
+    this.connected = connected;
   }
 }

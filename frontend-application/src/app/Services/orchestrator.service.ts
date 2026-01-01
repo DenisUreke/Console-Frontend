@@ -54,6 +54,9 @@ export class OrchestratorService {
       case 'controller_change':
         this.changeController(message.data);
         break;
+      case 'session_token':
+        this.saveSessionToken(message.data);
+        break;
       case 'error':
         this.handleError(message.data);
         break;
@@ -209,17 +212,27 @@ private handlePlayerListUpdate(data: any): void {
 
   joinGame(playerName: string): void {
 
+    const token = sessionStorage.getItem('sessionToken');
+    console.log("Using session token:", token);
+
     const message = {
       type: 'player_join',
       data: {
-        name: playerName
+        name: playerName,
+        session_token: token ?? null
       }
     };
 
-    const tempPlayer = new Player(playerName);
+    //const tempPlayer = new Player(playerName); //incase i break the shit
+    const tempPlayer = new Player(playerName, 0, false, 0, 0, 1, false, '', token ?? '', true);
     this.currentPlayerSubject.next(tempPlayer);
 
     this.webSocketService.sendMessage(JSON.stringify(message));
+  }
+
+  saveSessionToken(data: any): void {
+    console.log("Session token received:", data.session_token);
+    sessionStorage.setItem('sessionToken', data.session_token);
   }
 
   changeLeader(player: Player) {
