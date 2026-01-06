@@ -61,7 +61,7 @@ export class OrchestratorService {
       case 'error':
         this.handleError(message.data);
         break;
-      case 'trivia_state':
+      case 'trivia':
         this.triviaService.handleTriviaMessage(message.data);
         break;
       default:

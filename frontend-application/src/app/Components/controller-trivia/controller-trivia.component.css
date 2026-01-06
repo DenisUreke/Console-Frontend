@@ -208,6 +208,38 @@
 /*--------------------------------------*/
 
 .test-phase-display{
+  display: flex;
+  flex-direction: column;
   margin-top: 20px;
   color: var(--player-color, #00FFFF);
+}
+
+.question-text {
+  font-size: 24px;
+  color: var(--player-color, #00FFFF);
+  text-align: center;
+  padding: 10px;
+}
+
+.move-item {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.35);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.move-item.selected {
+  border-color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.02);
+}
+
+.move-item:active {
+  transform: scale(0.98);
 }

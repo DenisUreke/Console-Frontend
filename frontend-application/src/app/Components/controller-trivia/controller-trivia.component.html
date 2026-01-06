@@ -28,16 +28,22 @@
     <div class="controller-container-main">
         <div class="question-display">
             <div class="question-text">
-                {{ currentQuestion?.question_text }}
+                {{ possibleMovesData?.dice_value }}
             </div>
         </div>
         <div class="answers-display">
 
         <div class="test-phase-display">
-          <div>Trivia phase: {{ phase$ | async }}</div>
-
-            <button (click)="testSetPhase()">Test: set phase to ANSWERING</button>
+          <button
+            *ngFor="let move of possibleMovesData?.moves; trackBy: trackByMoveIndex"
+            class="move-item"
+            [class.selected]="selectedMoveIndex === move.index"
+            (click)="selectMove(move)"
+            type="button">
+            {{ move.tile_type }} <span *ngIf="move.category">({{ move.category }})</span>
+          </button>
         </div>
+
 
 
 
@@ -51,3 +57,18 @@
 
   </div>
 </div>
+
+<!--
+
+export interface PossibleMove {
+  index: number;
+  tile_type: TileTypeEnum;
+  category: TPWedgeCategoryEnum | null; // null for roll_again tiles
+}
+
+export interface PossibleMovesData {
+  dice_value: number;
+  moves: PossibleMove[];
+}
+
+-->

@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TriviaService } from '../../Services/trivia.service';
 import { TriviaPhase } from '../../Enums/Trivia';
+import { PossibleMovesData, PossibleMove } from '../../Enums/Trivia';
  
 
 @Component({
@@ -28,6 +29,9 @@ export class ControllerTriviaComponent {
   controllerType: ControllerType = ControllerType.KEYPAD;
   throttle = 50;
   currentQuestion: any = null; // Placeholder for current question will chage later
+  possibleMovesData: PossibleMovesData | null = null;
+
+  selectedMoveIndex: number | null = null;
 
   // Subscriptions to orchestrator observables
   private playersSubscription: Subscription | undefined;
@@ -35,6 +39,7 @@ export class ControllerTriviaComponent {
   private gameStateSubscription: Subscription | undefined;
   private currentPlayerSubscription: Subscription | undefined;
   private controllerTypeSubscription: Subscription | undefined;
+  private possibleMovesSubscription: Subscription | undefined;
 
   // Trivia service subscription
   phase$: Observable<TriviaPhase>;
@@ -82,6 +87,13 @@ export class ControllerTriviaComponent {
       (type) => {
         this.controllerType = type;
         console.log('Controller - Controller type:', type);
+      }
+    );
+    
+    this.possibleMovesSubscription = this.triviaService.possibleMovesData$.subscribe(
+      (possibleMovesData) => {
+        this.possibleMovesData = possibleMovesData;
+        console.log('Controller - Current question:', possibleMovesData);
       }
     );
     
@@ -137,4 +149,15 @@ export class ControllerTriviaComponent {
   testSetPhase(): void {
     this.triviaService.setPhase(TriviaPhase.ANSWERING);
   }
+
+  selectMove(move: PossibleMove): void {
+  this.selectedMoveIndex = move.index;
+
+  // later: send websocket message back to backend
+  // this.ws.send({ type: 'trivia', data: { phase: 'CHOOSE_MOVE', topic: 'move_selected', payload: { index: move.index } }});
+}
+
+trackByMoveIndex(_: number, move: PossibleMove): number {
+  return move.index;
+}
 }
