@@ -4,6 +4,7 @@ import { WebsocketService } from './websocket.service';
 import { ControllerType } from '../Enums/Controller_type';
 import { Player } from '../Models/Player';
 import { State } from '../Enums/State';
+import { TriviaService } from './trivia.service';
 
 
 @Injectable({
@@ -26,7 +27,7 @@ export class OrchestratorService {
   private controllerTypeSubject = new BehaviorSubject<ControllerType>(ControllerType.KEYPAD);
   public controllerType$: Observable<ControllerType> = this.controllerTypeSubject.asObservable();
 
-  constructor(private webSocketService: WebsocketService) {
+  constructor(private webSocketService: WebsocketService, private triviaService: TriviaService) {
     this.initializeMessageHandling();
   }
 
@@ -59,6 +60,9 @@ export class OrchestratorService {
         break;
       case 'error':
         this.handleError(message.data);
+        break;
+      case 'trivia_state':
+        this.triviaService.handleTriviaMessage(message.data);
         break;
       default:
         console.warn('Unknown message type:', message.type);

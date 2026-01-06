@@ -1,4 +1,5 @@
 export enum ControllerType {
   KEYPAD = 'KEYPAD',
-  JOYSTICK = 'JOYSTICK'
+  JOYSTICK = 'JOYSTICK',
+  TRIVIA = 'TRIVIA'
 }

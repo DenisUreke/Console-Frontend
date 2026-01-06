@@ -1,0 +1,53 @@
+<div class="main-parent">
+  <div class="inner-parent">
+
+    <!-- Top menu with players dropdown -->
+    <div class="top-menu-parent">
+      <div *ngIf="currentPlayer" class="current-player">
+        {{ currentPlayer.player_name }}
+      </div>
+      <div class="start-button" (click)="onButtonClick('pause_toggle')">START</div>
+      <div class="player-info">
+        <div class="player-count">
+          <i class="fas fa-user"></i> logged: {{ playerCount }}
+          <!--<i class="fas fa-crown"></i>-->
+        </div>
+        <div class="player-dropdown" *ngIf="currentPlayer?.is_leader">
+          <select (change)="onPlayerSelected($event)" class="player-select" title="Select a player from the list">
+            <option value="" disabled selected>{{ getLeaderName() }}</option>
+            <ng-container *ngFor="let player of players">
+              <option *ngIf="player.player_name !== currentPlayer?.player_name" [value]="player.player_number">
+                {{ player.player_number }}: {{ player.player_name }} {{ player.is_leader ? '👑' : '' }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="controller-container-main">
+        <div class="question-display">
+            <div class="question-text">
+                {{ currentQuestion?.question_text }}
+            </div>
+        </div>
+        <div class="answers-display">
+
+        <div class="test-phase-display">
+          <div>Trivia phase: {{ phase$ | async }}</div>
+
+            <button (click)="testSetPhase()">Test: set phase to ANSWERING</button>
+        </div>
+
+
+
+
+        </div>
+    </div>
+
+    <div class="controller-container-footer">
+        <button class="controller-button" (click)="onButtonClick('X')">X</button>
+    </div>
+
+  </div>
+</div>

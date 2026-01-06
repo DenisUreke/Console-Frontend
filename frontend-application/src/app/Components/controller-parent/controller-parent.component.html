@@ -1,6 +1,7 @@
 <div
   class="controller-root"
   [style.--player-color]="(currentPlayer$ | async)?.color_theme || '#00FFFF'">
+<app-controller-trivia *ngIf="controllerType === ControllerType.TRIVIA"></app-controller-trivia>
 <app-controller-lobby *ngIf="controllerType === ControllerType.JOYSTICK"></app-controller-lobby>
 <app-controller-menu *ngIf="controllerType === ControllerType.KEYPAD"></app-controller-menu>
 </div>

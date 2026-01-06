@@ -1,21 +1,23 @@
 import { Component, OnDestroy, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import nipplejs from 'nipplejs';
+import { Subscription, Observable } from 'rxjs';
 import { ControllerType } from '../../Enums/Controller_type';
 import { OrchestratorService } from '../../Services/orchestrator.service';
 import { Player } from '../../Models/Player';
 import { State } from '../../Enums/State';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TriviaService } from '../../Services/trivia.service';
+import { TriviaPhase } from '../../Enums/Trivia';
+ 
 
 @Component({
-  selector: 'app-controller-lobby',
+  selector: 'app-controller-trivia',
   standalone: true,
-  imports: [FormsModule, CommonModule],
-  templateUrl: './controller-lobby.component.html',
-  styleUrl: './controller-lobby.component.css'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './controller-trivia.component.html',
+  styleUrl: './controller-trivia.component.css'
 })
-export class ControllerLobbyComponent implements OnDestroy, AfterViewInit, OnInit {
+export class ControllerTriviaComponent {
   @ViewChild('joystickContainer', { static: false }) joystickContainer!: ElementRef;
 
   // Game state from orchestrator
@@ -23,8 +25,9 @@ export class ControllerLobbyComponent implements OnDestroy, AfterViewInit, OnIni
   playerCount = 0;
   gameState: State = State.LOBBY;
   currentPlayer: Player | null = null;
-  controllerType: ControllerType = ControllerType.JOYSTICK;
+  controllerType: ControllerType = ControllerType.KEYPAD;
   throttle = 50;
+  currentQuestion: any = null; // Placeholder for current question will chage later
 
   // Subscriptions to orchestrator observables
   private playersSubscription: Subscription | undefined;
@@ -33,12 +36,17 @@ export class ControllerLobbyComponent implements OnDestroy, AfterViewInit, OnIni
   private currentPlayerSubscription: Subscription | undefined;
   private controllerTypeSubscription: Subscription | undefined;
 
+  // Trivia service subscription
+  phase$: Observable<TriviaPhase>;
+
   private joystickManager: any;
 
   // Dropdown state
   selectedPlayerId: number | null = null;
 
-  constructor(private orchestrator: OrchestratorService) { }
+  constructor(private orchestrator: OrchestratorService, private triviaService: TriviaService) {
+    this.phase$ = this.triviaService.phase$
+   }
 
   ngOnInit(): void {
     // Subscribe to orchestrator observables (no direct WebSocket subscription)
@@ -76,44 +84,8 @@ export class ControllerLobbyComponent implements OnDestroy, AfterViewInit, OnIni
         console.log('Controller - Controller type:', type);
       }
     );
+    
   }
-
-  ngAfterViewInit() {
-    this.initializeJoystick();
-  }
-
-private initializeJoystick() {
-  if (!this.joystickContainer) return;
-
-  this.joystickManager = nipplejs.create({
-    zone: this.joystickContainer.nativeElement,
-    mode: 'static',
-    position: { left: '50%', top: '50%' },
-    color: 'cyan',
-    size: 120
-  });
-
-  // Throttle joystick messages (send every 50ms max)
-  let lastSent = Date.now();
-
-  this.joystickManager.on('move', (evt: any, data: any) => {
-    const now = Date.now();
-    if (now - lastSent > this.throttle) {
-      this.orchestrator.sendJoystickMove(
-        data.angle?.degree || 0,
-        data.distance || 0
-      );
-      lastSent = now;
-    }
-  });
-
-  this.joystickManager.on('end', () => {
-    console.log('Joystick released');
-
-    // Use orchestrator to send release event
-    this.orchestrator.sendJoystickRelease();
-  });
-}
 
   onButtonClick(button: string): void {
     console.log('Button clicked:', button);
@@ -122,12 +94,8 @@ private initializeJoystick() {
     this.orchestrator.sendButtonPress(button);
   }
 
-  onJoystickMove(joystick: string): void {
-    console.log('Joystick used:', joystick);
-  }
-
   onPlayerSelected(event: any): void {
-  
+
     const selectedID = Number(event.target.value)
     const selectedPlayer = this.players.find(p => p.player_number === selectedID)
 
@@ -163,5 +131,10 @@ private initializeJoystick() {
 
   getLeaderName(): string {
     return this.orchestrator.getLeaderName();
+  }
+
+ // TEMP test helper (remove later)
+  testSetPhase(): void {
+    this.triviaService.setPhase(TriviaPhase.ANSWERING);
   }
 }
