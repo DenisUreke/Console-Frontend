@@ -100,6 +100,7 @@ export class ControllerTriviaComponent {
   }
 
   onButtonClick(button: string): void {
+    
     console.log('Button clicked:', button);
 
     // Use orchestrator to send button press

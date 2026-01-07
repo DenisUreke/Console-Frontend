@@ -227,7 +227,7 @@
   padding: 12px 14px;
   margin: 8px 0;
   border-radius: 12px;
-  border: 2px solid rgba(255,255,255,0.2);
+  border: 2px solid var(--player-color, #00FFFF);
   background: rgba(0,0,0,0.35);
   color: white;
   font-weight: 600;
@@ -236,7 +236,7 @@
 
 .move-item.selected {
   border-color: rgba(255,255,255,0.9);
-  background: rgba(255,255,255,0.15);
+  background: var(--player-color, #00FFFF);
   transform: scale(1.02);
 }
 
