@@ -8,10 +8,6 @@
       </div>
       <div class="start-button" (click)="onButtonClick('pause_toggle')">START</div>
       <div class="player-info">
-        <div class="player-count">
-          <i class="fas fa-user"></i> logged: {{ playerCount }}
-          <!--<i class="fas fa-crown"></i>-->
-        </div>
         <div class="player-dropdown" *ngIf="currentPlayer?.is_leader">
           <select (change)="onPlayerSelected($event)" class="player-select" title="Select a player from the list">
             <option value="" disabled selected>{{ getLeaderName() }}</option>
@@ -53,18 +49,3 @@
 
   </div>
 </div>
-
-<!--
-
-export interface PossibleMove {
-  index: number;
-  tile_type: TileTypeEnum;
-  category: TPWedgeCategoryEnum | null; // null for roll_again tiles
-}
-
-export interface PossibleMovesData {
-  dice_value: number;
-  moves: PossibleMove[];
-}
-
--->

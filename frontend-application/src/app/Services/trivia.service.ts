@@ -12,7 +12,7 @@ export class TriviaService {
   public possibleMovesData$: Observable<PossibleMovesData | null> = this.possilbeMovesDataSubject.asObservable();
 
   // 1 Internal State holder (BehaviorSubject = "always has a current value")
-  private phaseSubject: BehaviorSubject<TriviaPhase> = new BehaviorSubject<TriviaPhase>(TriviaPhase.ANSWERING);
+  private phaseSubject: BehaviorSubject<TriviaPhase> = new BehaviorSubject<TriviaPhase>(TriviaPhase.IDLE);
   
   // 2) Public stream that components can subscribe to
   public phase$: Observable<TriviaPhase> = this.phaseSubject.asObservable();
@@ -32,7 +32,7 @@ export class TriviaService {
   handleTriviaMessage(data: any): void {
   const phase = data?.phase;
   const topic = data?.topic;
-  const payloadKeys = data?.payload ? Object.keys(data.payload) : [];
+  const payloadKeys = data?.payload ? Object.keys(data.payload) : []; // for testing
 
   switch (phase) {
     case TriviaPhase.CHOOSE_MOVE:
@@ -41,6 +41,8 @@ export class TriviaService {
       }
       break;
     }
+
+  this.setPhaseAcorrdingToMessage(phase);
 }
 
 setPossibleMovesData(movesData: PossibleMovesData): void {
@@ -49,6 +51,20 @@ setPossibleMovesData(movesData: PossibleMovesData): void {
 
 getPossibleMovesData(): PossibleMovesData | null {
   return this.possilbeMovesDataSubject.value;
+}
+
+setPhaseAcorrdingToMessage(phase: string): void {
+  switch (phase) {
+    case 'IDLE':
+      this.setPhase(TriviaPhase.IDLE);
+      break;
+    case 'CHOOSE_MOVE':
+      this.setPhase(TriviaPhase.CHOOSE_MOVE);
+      break;
+    case 'QUESTION':
+      this.setPhase(TriviaPhase.QUESTION);
+      break;
+  }
 }
 
 }

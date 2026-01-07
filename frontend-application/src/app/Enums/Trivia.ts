@@ -1,9 +1,7 @@
 export enum TriviaPhase {
+  IDLE = 'IDLE',
   CHOOSE_MOVE = 'CHOOSE_MOVE',
-  DICE_ROLL = 'DICE_ROLL',
-  QUESTION = 'QUESTION',
-  ANSWERING = 'ANSWERING',
-  REVEAL = 'REVEAL'
+  QUESTION = 'QUESTION'
 }
 
 /********************

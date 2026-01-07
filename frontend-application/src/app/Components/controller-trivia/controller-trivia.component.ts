@@ -29,7 +29,11 @@ export class ControllerTriviaComponent {
   controllerType: ControllerType = ControllerType.KEYPAD;
   throttle = 50;
   currentQuestion: any = null; // Placeholder for current question will chage later
+
+  // Possible moves data and phase from trivia service
   possibleMovesData: PossibleMovesData | null = null;
+  currentPhase: TriviaPhase = TriviaPhase.IDLE;
+
 
   selectedMoveIndex: number | null = null;
 
@@ -40,6 +44,7 @@ export class ControllerTriviaComponent {
   private currentPlayerSubscription: Subscription | undefined;
   private controllerTypeSubscription: Subscription | undefined;
   private possibleMovesSubscription: Subscription | undefined;
+  private phaseSubscription: Subscription | undefined;
 
   // Trivia service subscription
   phase$: Observable<TriviaPhase>;
@@ -96,15 +101,37 @@ export class ControllerTriviaComponent {
         console.log('Controller - Current question:', possibleMovesData);
       }
     );
+
+    this.phaseSubscription = this.triviaService.phase$.subscribe(
+      (phase) => {
+        this.currentPhase = phase;
+        console.log('Controller - Current phase:', phase);
+      }
+    );
     
   }
 
   onButtonClick(button: string): void {
-    
-    console.log('Button clicked:', button);
 
-    // Use orchestrator to send button press
-    this.orchestrator.sendButtonPress(button);
+    var send_value: string = '';
+
+    if (button == 'pause_toggle') {
+      this.orchestrator.sendButtonPress(button);
+      return;
+    }
+
+    switch(this.currentPhase){
+      case TriviaPhase.IDLE:
+        send_value = 'X';
+        break;
+      case TriviaPhase.CHOOSE_MOVE:
+        send_value = this.selectedMoveIndex !== null ? this.selectedMoveIndex.toString() : '';
+        break;
+      case TriviaPhase.QUESTION:
+        break;
+    }
+    
+    this.orchestrator.sendButtonPress(send_value);
   }
 
   onPlayerSelected(event: any): void {
@@ -145,12 +172,6 @@ export class ControllerTriviaComponent {
   getLeaderName(): string {
     return this.orchestrator.getLeaderName();
   }
-
- // TEMP test helper (remove later)
-  testSetPhase(): void {
-    this.triviaService.setPhase(TriviaPhase.ANSWERING);
-  }
-
   selectMove(move: PossibleMove): void {
   this.selectedMoveIndex = move.index;
 
