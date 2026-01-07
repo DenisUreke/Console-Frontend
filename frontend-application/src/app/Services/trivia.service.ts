@@ -40,6 +40,8 @@ export class TriviaService {
       this.setPossibleMovesData(data.payload as PossibleMovesData);
       }
       break;
+    case TriviaPhase.QUESTION:
+      console.log('Received QUESTION phase with payload keys:', data.payload);
     }
 
   this.setPhaseAcorrdingToMessage(phase);
