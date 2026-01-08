@@ -8,12 +8,17 @@ import { PossibleMovesData } from '../Enums/Trivia';
 })
 export class TriviaService {
 
+  private currentQuestionSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public currentQuestion$: Observable<any> = this.currentQuestionSubject.asObservable();
+
+  private currentAnswersListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public currentAnswersList$: Observable<any[]> = this.currentAnswersListSubject.asObservable();
+
   private possilbeMovesDataSubject: BehaviorSubject<PossibleMovesData | null> = new BehaviorSubject<PossibleMovesData | null>(null);
   public possibleMovesData$: Observable<PossibleMovesData | null> = this.possilbeMovesDataSubject.asObservable();
 
   // 1 Internal State holder (BehaviorSubject = "always has a current value")
   private phaseSubject: BehaviorSubject<TriviaPhase> = new BehaviorSubject<TriviaPhase>(TriviaPhase.IDLE);
-  
   // 2) Public stream that components can subscribe to
   public phase$: Observable<TriviaPhase> = this.phaseSubject.asObservable();
 
@@ -42,6 +47,8 @@ export class TriviaService {
       break;
     case TriviaPhase.QUESTION:
       console.log('Received QUESTION phase with payload keys:', data.payload);
+      this.assignQuestionData(data.payload);
+      break;
     }
 
   this.setPhaseAcorrdingToMessage(phase);
@@ -67,6 +74,15 @@ setPhaseAcorrdingToMessage(phase: string): void {
       this.setPhase(TriviaPhase.QUESTION);
       break;
   }
+}
+
+assignQuestionData(payload: any): void {
+  const q = payload?.questions?.[0];
+  if (!q) return;
+
+  this.currentQuestionSubject.next(q.question);
+  this.currentAnswersListSubject.next(q.answers);
+  console.log('Assigned question data:', q);
 }
 
 }

@@ -28,12 +28,14 @@ export class ControllerTriviaComponent {
   currentPlayer: Player | null = null;
   controllerType: ControllerType = ControllerType.KEYPAD;
   throttle = 50;
-  currentQuestion: any = null; // Placeholder for current question will chage later
 
   // Possible moves data and phase from trivia service
   possibleMovesData: PossibleMovesData | null = null;
   currentPhase: TriviaPhase = TriviaPhase.IDLE;
 
+  // Current question and answers
+  currentQuestion: any = null;
+  currentAnswersList: any[] = [];
 
   selectedMoveIndex: number | null = null;
 
@@ -45,6 +47,8 @@ export class ControllerTriviaComponent {
   private controllerTypeSubscription: Subscription | undefined;
   private possibleMovesSubscription: Subscription | undefined;
   private phaseSubscription: Subscription | undefined;
+  private currentQuestionSubscription: Subscription | undefined;
+  private currentAnswersListSubscription: Subscription | undefined;
 
   // Trivia service subscription
   phase$: Observable<TriviaPhase>;
@@ -106,6 +110,19 @@ export class ControllerTriviaComponent {
       (phase) => {
         this.currentPhase = phase;
         console.log('Controller - Current phase:', phase);
+      }
+    );
+
+    this.currentQuestionSubscription = this.triviaService.currentQuestion$.subscribe(
+      (question) => {
+        this.currentQuestion = question;
+        console.log('Controller - Current question:', question);
+      }
+    );
+    this.currentAnswersListSubscription = this.triviaService.currentAnswersList$.subscribe(
+      (answers) => {
+        this.currentAnswersList = answers;
+        console.log('Controller - Current answers list:', answers);
       }
     );
     
